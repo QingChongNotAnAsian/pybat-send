@@ -18,3 +18,17 @@ if [ $bn_notifs -eq 1 ]; then
 	python ~/.local/bin/pybat-send/pybat-send.py &
 fi
 ```
+
+##### Running at a custom time (e.g. cron, macro)
+
+If you want to run this script on a key macro, or from cron, etc.. use the file `run_do_actions.py`. In i3 this key macro would look like this:
+
+```
+bindsym $mod+Control+b exec --no-startup-id /path/to/run_do_actions.py
+```
+
+As a cron job:
+
+```
+* * * * * /path/to/run_do_actions.py
+```
