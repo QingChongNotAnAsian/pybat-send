@@ -53,6 +53,7 @@ def do_actions():
     
     times_lb = 0
     times_mb = 0
+    times_hb = 0
     times_fb = 0
     times_stc = 0
     times_spc = 0
