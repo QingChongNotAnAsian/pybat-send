@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+NOTIF_EVERY = 5
+
 import subprocess
 import time
 
@@ -58,41 +60,43 @@ def do_actions():
     times_stc = 0
     times_spc = 0
 
-    while True:
-        charge = int(battery_precentage())
-        is_charging = is_bat_charging() 
+    charge = int(battery_precentage())
+    is_charging = is_bat_charging() 
 
-        if charge == 100 and times_fb == 0:
-            run_command(command_full_battery)
-            times_fb = 1
-        elif charge <= 50 and charge > 25 and times_hb == 0:
-            run_command(command_half_battery)
-            times_hb = 1
-        elif charge <= 25 and charge > 10 and times_mb == 0:
-            run_command(command_med_battery)
-            times_mb = 1
-        elif charge <= 10 and times_lb == 0:
-            run_command(command_low_battery)
-            times_lb = 1
+    if charge == 100 and times_fb == 0:
+        run_command(command_full_battery)
+        times_fb = 1
+    elif charge <= 50 and charge > 25 and times_hb == 0:
+        run_command(command_half_battery)
+        times_hb = 1
+    elif charge <= 25 and charge > 10 and times_mb == 0:
+        run_command(command_med_battery)
+        times_mb = 1
+    elif charge <= 10 and times_lb == 0:
+        run_command(command_low_battery)
+        times_lb = 1
 
-        if is_charging and times_stc == 0:
-            run_command(command_start_charging.format(charge))
-            times_stc = 1
-            times_spc = 0
-            
-            times_fb = 0
-            times_hb = 0
-            times_mb = 0
-            times_lb = 0
-        elif not is_charging and times_spc == 0:
-            run_command(command_stop_charging.format(charge))
-            times_spc = 1
-            times_stc = 0
-            
-            times_hb = 0
-            times_mb = 0
-            times_lb = 0
-        time.sleep(5)
+    if is_charging and times_stc == 0:
+        run_command(command_start_charging.format(charge))
+        times_stc = 1
+        times_spc = 0
+        
+        times_fb = 0
+        times_hb = 0
+        times_mb = 0
+        times_lb = 0
+    elif not is_charging and times_spc == 0:
+        run_command(command_stop_charging.format(charge))
+        times_spc = 1
+        times_stc = 0
+        
+        times_hb = 0
+        times_mb = 0
+        times_lb = 0
+
 
 if __name__ == '__main__':
-    do_actions()
+    while True:
+        do_actions()
+        time.sleep(NOTIFY_EVERY)
+
