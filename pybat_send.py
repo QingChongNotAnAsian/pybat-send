@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-NOTIF_EVERY = 5
+NOTIFY_EVERY = 5
 
 import subprocess
 import time
@@ -70,7 +70,7 @@ def do_actions():
         run_command(command_half_battery)
         times_hb = 1
     elif charge <= 25 and charge > 10 and times_mb == 0:
-        run_command(command_med_battery)
+        run_command(command_medium_battery)
         times_mb = 1
     elif charge <= 10 and times_lb == 0:
         run_command(command_low_battery)
