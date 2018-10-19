@@ -5,6 +5,21 @@ NOTIFY_EVERY = 5
 import subprocess
 import time
 
+command_low_battery = "notify-send 'Battery' '10%, will die soon!' -u critical"
+command_medium_battery = "notify-send 'Battery' '25%, charge soon!' -u normal"
+command_half_battery = "notify-send 'Battery' 'Half Battery' -u low"
+command_full_battery = "notify-send 'Battery' 'Full Battery' -u low"
+command_start_charging = "notify-send 'Battery' 'Charging @ {0}%' -u low"
+command_stop_charging = "notify-send 'Battery', 'Discharging @ {0}%' -u low"
+
+times_lb = 0
+times_mb = 0
+times_hb = 0
+times_fb = 0
+
+times_stc = 0
+times_spc = 0
+
 def run_command(cmd):
     """
     Run command as /bin/bash script.
@@ -45,20 +60,9 @@ def do_actions():
     """
     Do different actions based on the state of the battery.
     """
-    
-    command_low_battery = "notify-send 'Battery' '10%, will die soon!' -u critical"
-    command_medium_battery = "notify-send 'Battery' '25%, charge soon!' -u normal"
-    command_half_battery = "notify-send 'Battery' 'Half Battery' -u low"
-    command_full_battery = "notify-send 'Battery' 'Full Battery' -u low"
-    command_start_charging = "notify-send 'Battery' 'Charging @ {0}%' -u low"
-    command_stop_charging = "notify-send 'Battery', 'Discharging @ {0}%' -u low"
-    
-    times_lb = 0
-    times_mb = 0
-    times_hb = 0
-    times_fb = 0
-    times_stc = 0
-    times_spc = 0
+
+    global times_lb, times_mb, times_hb, times_fb, times_stc, times_spc
+    global command_low_battery, command_medium_battery, command_half_battery, command_full_battery, command_start_charging, command_stop_charging
 
     charge = int(battery_precentage())
     is_charging = is_bat_charging() 
@@ -81,18 +85,10 @@ def do_actions():
         times_stc = 1
         times_spc = 0
         
-        times_fb = 0
-        times_hb = 0
-        times_mb = 0
-        times_lb = 0
     elif not is_charging and times_spc == 0:
         run_command(command_stop_charging.format(charge))
         times_spc = 1
         times_stc = 0
-        
-        times_hb = 0
-        times_mb = 0
-        times_lb = 0
 
 
 if __name__ == '__main__':
